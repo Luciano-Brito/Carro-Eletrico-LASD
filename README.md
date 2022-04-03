@@ -3,7 +3,7 @@
 ---
 
 **Descrição:**  
- Sumulação de uma simples interface de um carro elétrico ulizando o ATmega 328p.
+ Sumulação de uma interface simples de um carro elétrico ulizando o ATmega 328p.
  
  + Biblioteca utilizada para o display Oled:	  
  https://github.com/efthymios-ks/AVR-SSD1306
