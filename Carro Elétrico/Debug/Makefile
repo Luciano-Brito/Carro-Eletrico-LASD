@@ -33,14 +33,18 @@ LINKER_SCRIPT_DEP:=
 
 # Every subdirectory with source files must be described here
 SUBDIRS :=  \
+../USART_assit \
+../Shift_reg \
 ../SSD1306
 
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
 ../main.c \
+../Shift_reg/Shift_reg.c \
 ../SSD1306/SSD1306.c \
-../SSD1306/TWI.c
+../SSD1306/TWI.c \
+../USART_assit/USART_assist.c
 
 
 PREPROCESSING_SRCS += 
@@ -51,23 +55,31 @@ ASM_SRCS +=
 
 OBJS +=  \
 main.o \
+Shift_reg/Shift_reg.o \
 SSD1306/SSD1306.o \
-SSD1306/TWI.o
+SSD1306/TWI.o \
+USART_assit/USART_assist.o
 
 OBJS_AS_ARGS +=  \
 main.o \
+Shift_reg/Shift_reg.o \
 SSD1306/SSD1306.o \
-SSD1306/TWI.o
+SSD1306/TWI.o \
+USART_assit/USART_assist.o
 
 C_DEPS +=  \
 main.d \
+Shift_reg/Shift_reg.d \
 SSD1306/SSD1306.d \
-SSD1306/TWI.d
+SSD1306/TWI.d \
+USART_assit/USART_assist.d
 
 C_DEPS_AS_ARGS +=  \
 main.d \
+Shift_reg/Shift_reg.d \
 SSD1306/SSD1306.d \
-SSD1306/TWI.d
+SSD1306/TWI.d \
+USART_assit/USART_assist.d
 
 OUTPUT_FILE_PATH +=Carro\ Eletrico.elf
 
@@ -90,6 +102,13 @@ LINKER_SCRIPT_DEP+=
 	@echo Finished building: $<
 	
 
+Shift_reg/Shift_reg.o: ../Shift_reg/Shift_reg.c
+	@echo Building file: $<
+	@echo Invoking: XC8 C Compiler : 2.31
+	$(QUOTE)C:\Program Files\Microchip\xc8\v2.31\bin\xc8-cc.exe$(QUOTE)  -mcpu=ATmega328P  -mdfp="C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\xc8"  -c -x c -funsigned-char -funsigned-bitfields -mext=cci -D__ATmega328P__ -DDEBUG  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
 SSD1306/SSD1306.o: ../SSD1306/SSD1306.c
 	@echo Building file: $<
 	@echo Invoking: XC8 C Compiler : 2.31
@@ -98,6 +117,13 @@ SSD1306/SSD1306.o: ../SSD1306/SSD1306.c
 	
 
 SSD1306/TWI.o: ../SSD1306/TWI.c
+	@echo Building file: $<
+	@echo Invoking: XC8 C Compiler : 2.31
+	$(QUOTE)C:\Program Files\Microchip\xc8\v2.31\bin\xc8-cc.exe$(QUOTE)  -mcpu=ATmega328P  -mdfp="C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\xc8"  -c -x c -funsigned-char -funsigned-bitfields -mext=cci -D__ATmega328P__ -DDEBUG  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+USART_assit/USART_assist.o: ../USART_assit/USART_assist.c
 	@echo Building file: $<
 	@echo Invoking: XC8 C Compiler : 2.31
 	$(QUOTE)C:\Program Files\Microchip\xc8\v2.31\bin\xc8-cc.exe$(QUOTE)  -mcpu=ATmega328P  -mdfp="C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.6.364\xc8"  -c -x c -funsigned-char -funsigned-bitfields -mext=cci -D__ATmega328P__ -DDEBUG  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

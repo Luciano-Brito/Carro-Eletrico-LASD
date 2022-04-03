@@ -14,18 +14,19 @@ main.d main.o: .././main.c \
  c:\program\ files\microchip\xc8\v2.31\avr\avr\include\util\delay.h \
  c:\program\ files\microchip\xc8\v2.31\avr\avr\include\util\delay_basic.h \
  c:\program\ files\microchip\xc8\v2.31\avr\avr\include\math.h \
+ c:\program\ files\microchip\xc8\v2.31\avr\lib\gcc\avr\5.4.0\include\stdbool.h \
+ c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\eeprom.h \
+ c:\program\ files\microchip\xc8\v2.31\avr\lib\gcc\avr\5.4.0\include\stddef.h \
+ c:\program\ files\microchip\xc8\v2.31\avr\avr\include\stdio.h \
+ c:\program\ files\microchip\xc8\v2.31\avr\lib\gcc\avr\5.4.0\include\stdarg.h \
  .././SSD1306\SSD1306.h \
  c:\program\ files\microchip\xc8\v2.31\avr\avr\include\string.h \
- c:\program\ files\microchip\xc8\v2.31\avr\lib\gcc\avr\5.4.0\include\stddef.h \
  c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\pgmspace.h \
  .././SSD1306\IO_Macros.h .././SSD1306\SSD1306_Settings.h \
  .././SSD1306\TWI.h .././SSD1306\TWI_Settings.h .././SSD1306\Font5x8.h \
  .././SSD1306\Tensao_Baixa.h .././SSD1306\Temperatura_Alta.h \
- .././SSD1306\Cinto.h \
- c:\program\ files\microchip\xc8\v2.31\avr\lib\gcc\avr\5.4.0\include\stdbool.h \
- c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\eeprom.h \
- c:\program\ files\microchip\xc8\v2.31\avr\avr\include\stdio.h \
- c:\program\ files\microchip\xc8\v2.31\avr\lib\gcc\avr\5.4.0\include\stdarg.h
+ .././SSD1306\Cinto.h .././Shift_reg\Shift_reg.h \
+ .././USART_assit\USART_assit.h
 
 c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\io.h:
 
@@ -57,11 +58,19 @@ c:\program\ files\microchip\xc8\v2.31\avr\avr\include\util\delay_basic.h:
 
 c:\program\ files\microchip\xc8\v2.31\avr\avr\include\math.h:
 
+c:\program\ files\microchip\xc8\v2.31\avr\lib\gcc\avr\5.4.0\include\stdbool.h:
+
+c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\eeprom.h:
+
+c:\program\ files\microchip\xc8\v2.31\avr\lib\gcc\avr\5.4.0\include\stddef.h:
+
+c:\program\ files\microchip\xc8\v2.31\avr\avr\include\stdio.h:
+
+c:\program\ files\microchip\xc8\v2.31\avr\lib\gcc\avr\5.4.0\include\stdarg.h:
+
 .././SSD1306\SSD1306.h:
 
 c:\program\ files\microchip\xc8\v2.31\avr\avr\include\string.h:
-
-c:\program\ files\microchip\xc8\v2.31\avr\lib\gcc\avr\5.4.0\include\stddef.h:
 
 c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\pgmspace.h:
 
@@ -81,10 +90,6 @@ c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\pgmspace.h:
 
 .././SSD1306\Cinto.h:
 
-c:\program\ files\microchip\xc8\v2.31\avr\lib\gcc\avr\5.4.0\include\stdbool.h:
+.././Shift_reg\Shift_reg.h:
 
-c:\program\ files\microchip\xc8\v2.31\avr\avr\include\avr\eeprom.h:
-
-c:\program\ files\microchip\xc8\v2.31\avr\avr\include\stdio.h:
-
-c:\program\ files\microchip\xc8\v2.31\avr\lib\gcc\avr\5.4.0\include\stdarg.h:
+.././USART_assit\USART_assit.h:

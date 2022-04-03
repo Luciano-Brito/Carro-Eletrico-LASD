@@ -6,19 +6,20 @@
 */
 
 #define F_CPU 16000000UL
-#define BAUD 9600
-#define MYUBRR (F_CPU/16/BAUD-1)
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
+#include <stdbool.h>
+#include <avr/eeprom.h>
+#include <stdio.h>
+
 #include "SSD1306\SSD1306.h"
 #include "SSD1306\Font5x8.h"
 #include "SSD1306\Tensao_Baixa.h"
 #include "SSD1306\Temperatura_Alta.h"
 #include "SSD1306\Cinto.h"
-#include <stdbool.h>
-#include <avr/eeprom.h>
-#include <stdio.h>
+#include "Shift_reg\Shift_reg.h"
+#include "USART_assit\USART_assit.h"
 
 #define bt1 (1<<3)	//Botão 1 no pino 2 da porta
 #define bt2 (1<<4)	//Botão 2 no pino 3 da porta
@@ -31,16 +32,13 @@
 #define Park	(1<<7)	//entrada Park
 #define Cinto_	(1<<3)	//Entrada do cinto
 #define Sonar	(1<<0)	//Entada do Sonar
-#define Shift_reg_clk	(1<<1)	//clock do shift reg
-#define Shift_reg_en	(1<<2)	//entrada do shift reg
 #define Power_rele		(1<<4)	//Saída para o Rele da bateria
 #define Buzzer			(1<<5)	//Saída para o buzzer
 #define endereco_eeprom_dist 0
 #define endereco_eeprom_diam 2
 #define endereco_eeprom_tempmax 4
-#define Temp_bat_max 70
-#define V_bat_min 614	//V_bat_min = (1023/5) * 3V
-#define t 100			//tempo entre mudança de estado do shift_reg
+#define Temp_bat_max 70		//Temperatura máxima (em ºC)
+#define V_bat_min 614		//V_bat_min = (1023/5) * 3V
 
 // Variáveis globais
 uint8_t Diametro = 0;
@@ -71,24 +69,18 @@ bool Flag_cinto = 0;
 
 //Protótipos
 double map(double x, double en_min, double en_max, double sa_min, double sa_max); //mapeia uma entrada de en_min a en_max para uma saida de sa_min a sa_max
-void refresh_oled ();							//atualiza as informações no display
-void USART_send_byte (uint8_t data);			//envia um byte em decimal pela serial
-void USART_send_char (char Caracter);			//envia um caracter pela serial
-void USART_send_string (const char *Texto);		//envia uma string pela serial
-void USART_send_stringln (const char *Texto);	//envia uma string pela serial e pula a linha
-void Shift_reg(uint16_t velocidade_veiculo);	//carrega a uint16_t no registrador
-void Shift_reg_bit(uint8_t bit);				//carrega um bit no registrador
+void refresh_oled ();						//atualiza as informações no display
 
 int main(void)
 {
 	//I/O
-	DDRB &= !(Sonar|Cinto_);							//definindo o pinos pinos do Sonar e Cinto_ como entrada
-	DDRB |= (Buzzer|Power_rele|Shift_reg_clk|Shift_reg_en);			//definindo o pinos pinos do Buzzer, Power_rele, Shift_reg_clk e Shift_reg_en como saída
-	PORTB |= (Cinto_|Power_rele);									//habilitando resistor de pull-up no pino do cinto e habilita o Power_rele
-	DDRD &= !(bt1|bt2|I1|Dri_Rea|Park);					//definindo os pinos do bt1, bt2, I1, Dri_Rea e Park como entrada
-	DDRD |= (HB_O);										//definindo a o pino de controle da ponte h como saída
-	PORTD |= (bt1|bt2);									//habilitando resistor de pull-up nos pinos dos botões
-	DDRC &= !(POT|TEMP|BAT);							//definindo o pinos pinos do POT, TEMP e BAT como entrada
+	DDRB &= !(Sonar|Cinto_);				//definindo o pinos pinos do Sonar e Cinto_ como entrada
+	DDRB |= (Buzzer|Power_rele);			//definindo o pinos pinos do Buzzer e Power_rele como saída
+	PORTB |= (Cinto_|Power_rele);			//habilitando resistor de pull-up no pino do cinto e habilita o Power_rele
+	DDRD &= !(bt1|bt2|I1|Dri_Rea|Park);		//definindo os pinos do bt1, bt2, I1, Dri_Rea e Park como entrada
+	DDRD |= (HB_O);							//definindo a o pino de controle da ponte h como saída
+	PORTD |= (bt1|bt2);						//habilitando resistor de pull-up nos pinos dos botões
+	DDRC &= !(POT|TEMP|BAT);				//definindo o pinos pinos do POT, TEMP e BAT como entrada
 
 	//Configuração do ADC
 	ADMUX = 0b01000000;		//tensão Vcc de referência (5.0 V), canal 0
@@ -107,12 +99,6 @@ int main(void)
 	TCCR0B = 0b00000011;	//liga TC0 com prescaler de 64, fPWM = 16000000/(256*64) = 976.56 Hz
 	//Timer 1
 	TCCR1B = (1<<ICES1)|(1<<CS12);	//habilita modo de captura na borda de subida, TC1 com prescaler de 256; uma contagem a cada 16 us
-	
-	//Configuração da USART
-	UBRR0H = (unsigned char)(MYUBRR>>8); //Ajusta a taxa de transmissão
-	UBRR0L = (unsigned char)MYUBRR;
-	UCSR0B = (1<<RXCIE0)|(1<<RXEN0)|(1<<TXEN0); //Habilita o transmissor e o receptor
-	UCSR0C = (3<<UCSZ00); //Ajusta o formato do frame: 8 bits de dados e 1 de parada
 
 	//Interrupções
 	TIMSK1 = 1<<ICIE1; //habilita interrpção por captura do TC1
@@ -130,6 +116,8 @@ int main(void)
 
 	Distancia_cm = Distancia_KM*100000;	//recalculando distancia em cm com base no valor guardado na eeprom
 	
+	Shift_reg_init();
+	USART_init(9600);
 	GLCD_Setup();									//inicialização do display
 	GLCD_SetFont(Font5x8, 5, 8, GLCD_Merge);	//definindo a fonte a ser usada no display
 	
@@ -183,8 +171,6 @@ int main(void)
 		if(ADC_Temp != ADC1_a || ADC_Bat != ADC2_a){	//se algum valor do ADC mudar refaz os calculos relacionados ao ADC
 			ADC1_a = ADC_Temp;
 			ADC2_a = ADC_Bat;
-			
-			static uint16_t tempo_ms_temp = 0, tempo_ms_Vbat = 0;
 			
 			if(map(ADC_Temp,92.9907,152.99988,0,200) < 0)		//Corrige overflow caso o numero seja negativo
 			Temp_Bat = 0;
@@ -264,9 +250,9 @@ void refresh_oled (){
 			}
 			GLCD_GotoXY(77,1);
 			if(Switch)
-				GLCD_DrawBitmap(Cinto,23,29,GLCD_Merge);
+			GLCD_DrawBitmap(Cinto,23,29,GLCD_Merge);
 			else
-				GLCD_DrawBitmap(Cinto_Seta,23,29,GLCD_Merge);
+			GLCD_DrawBitmap(Cinto_Seta,23,29,GLCD_Merge);
 		}
 		
 		GLCD_DrawRoundRectangle(104,27,124,35,1,GLCD_Black);	//icone estático da bateria
@@ -293,7 +279,7 @@ void refresh_oled (){
 		GLCD_Render();
 	}
 }
-
+/*
 void USART_send_byte (uint8_t byte){
 	char Data [3] = {0,0,0};
 	sprintf(Data,"%u",byte);	//converte uint8_t para char
@@ -324,54 +310,11 @@ void USART_send_stringln (const char *Texto){
 	}
 	USART_send_char('\n');
 }
-
+*/
 double map(double x, double en_min, double en_max, double sa_min, double sa_max) {
 	return (x - en_min) * (sa_max - sa_min) / (en_max - en_min) + sa_min;
 }
 
-void Shift_reg(uint16_t velocidade_veiculo){
-	PORTB |= (Shift_reg_clk);	//aplica um pulso de clock
-	_delay_us(t);
-	PORTB &= !(Shift_reg_clk);
-	_delay_us(t);
-	Shift_reg_bit(1);		//carrega o segundo bit 1
-	for(uint8_t i=0;i<4;i++){	//gravando unidade no registrador
-		if(((velocidade_veiculo%10)>>i)&(0b1))
-		Shift_reg_bit(1);
-		else
-		Shift_reg_bit(0);
-	}
-	
-	for(uint8_t i=0;i<4;i++){	//gravando dezena no registrador
-		if((((velocidade_veiculo/10)%10)>>i)&(0b1))
-		Shift_reg_bit(1);
-		else
-		Shift_reg_bit(0);
-	}
-	for(uint8_t i=0;i<4;i++){	//gravando centena no registrador
-		if(((velocidade_veiculo/100)>>i)&(0b1))
-		Shift_reg_bit(1);
-		else
-		Shift_reg_bit(0);
-	}
-}
-
-void Shift_reg_bit(uint8_t bit){
-	PORTB &= !(Shift_reg_clk|Shift_reg_en );	//zerando saída da porta B
-	_delay_us(t);
-	if(bit){
-		PORTB |= (Shift_reg_en);
-		_delay_us(t);
-		PORTB |= (Shift_reg_clk)|(Shift_reg_en);
-		_delay_us(t);
-	}
-	else{
-		PORTB |= (Shift_reg_clk);
-		_delay_us(t);
-	}
-	PORTB &= !(Shift_reg_clk|Shift_reg_en );
-	_delay_us(t);
-}
 
 //interrupções
 

@@ -117,6 +117,12 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Shift_reg\Shift_reg.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Shift_reg\Shift_reg.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="SSD1306\Cinto.h">
       <SubType>compile</SubType>
     </Compile>
@@ -150,8 +156,16 @@
     <Compile Include="SSD1306\TWI_Settings.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="USART_assit\USART_assist.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="USART_assit\USART_assit.h">
+      <SubType>compile</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="USART_assit" />
+    <Folder Include="Shift_reg" />
     <Folder Include="SSD1306" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
