@@ -5,6 +5,31 @@
 *  Author: Luciano Júnior Santos Brito - 118111399
 */
 
+/* 
+Lista de mudanças que não tive tepo de mostrar no vídeo:
+
+---> Encapsulei e melhorei as funções relacionadas ao registrador de deslocamneto e escrevi funções para:
+		Escrever um bit
+		Escrever um inteiro sem sinal de 16 bits
+
+---> Escrevi e encapsulei funções relacionadas o monitor serial para:
+		Inicializar a USART
+		Escrever Strings (com e sem quebra de linha)
+		Escrever Caracteres
+		Escrever byte (sem sinal)
+		
+---> Adicionei a biblioteca do display oled:
+		Bitmap para o alerta de tensão baixa
+		Bitmap para o alerta de temperatura alta
+		Bitmap para o alerta de cinto (com e sem seta)
+		(esses bitmaps me deram bastante trabalho)
+		
+---> Coloquei o Timer 2 para gerar uma interrupção a cada 1ms para marcar o tempo de execução
+    (que acabou gerando uma interrupção a cada 0,5ms por algum bug do simulador)
+	
+---> Escrevi a função map() para facilitar os calculos de converão de escala
+*/
+
 #define F_CPU 16000000UL
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -279,42 +304,10 @@ void refresh_oled (){
 		GLCD_Render();
 	}
 }
-/*
-void USART_send_byte (uint8_t byte){
-	char Data [3] = {0,0,0};
-	sprintf(Data,"%u",byte);	//converte uint8_t para char
-	
-	if(byte == 0)				//se o recebido for 0 escreve "0"
-	USART_send_char("0");
 
-	for(int i = 0; byte; i++){		//escreve até ultimo caracter válido
-		USART_send_char(Data[i]);
-		byte /= 10;
-	}
-}
-
-void USART_send_char (char Caracter){
-	while(!(UCSR0A & (1<<UDRE0)));	//espera a limpeza do registrador de transmissão
-	UDR0 = Caracter;				//envia o caracter
-}
-
-void USART_send_string (const char *Texto){
-	while(*Texto){
-		USART_send_char(*Texto++);
-	}
-}
-
-void USART_send_stringln (const char *Texto){
-	while(*Texto){
-		USART_send_char(*Texto++);
-	}
-	USART_send_char('\n');
-}
-*/
 double map(double x, double en_min, double en_max, double sa_min, double sa_max) {
 	return (x - en_min) * (sa_max - sa_min) / (en_max - en_min) + sa_min;
 }
-
 
 //interrupções
 

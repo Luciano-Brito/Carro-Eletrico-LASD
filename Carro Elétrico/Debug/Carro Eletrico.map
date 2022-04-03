@@ -766,19 +766,19 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x0000000000000000     0x6008
+.debug_info     0x0000000000000000     0x6009
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x0000000000000000      0x5f4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/xc8/avr/lib/avr5/memx-const/crtatmega328p.o
- .debug_info    0x00000000000005f4     0x13c3 main.o
- .debug_info    0x00000000000019b7      0x5c8 Shift_reg/Shift_reg.o
- .debug_info    0x0000000000001f7f     0x315a SSD1306/SSD1306.o
- .debug_info    0x00000000000050d9      0x753 SSD1306/TWI.o
- .debug_info    0x000000000000582c      0x484 USART_assit/USART_assist.o
- .debug_info    0x0000000000005cb0       0xab C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/xc8/avr/lib/avr5/memx-const\libatmega328p.a(eerd_byte.o)
- .debug_info    0x0000000000005d5b       0xab C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/xc8/avr/lib/avr5/memx-const\libatmega328p.a(eerd_word.o)
- .debug_info    0x0000000000005e06       0xab C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/xc8/avr/lib/avr5/memx-const\libatmega328p.a(eewr_byte.o)
- .debug_info    0x0000000000005eb1       0xab C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/xc8/avr/lib/avr5/memx-const\libatmega328p.a(eewr_word.o)
- .debug_info    0x0000000000005f5c       0xac C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/xc8/avr/lib/avr5/memx-const\libatmega328p.a(eerd_block.o)
+ .debug_info    0x00000000000005f4     0x13c4 main.o
+ .debug_info    0x00000000000019b8      0x5c8 Shift_reg/Shift_reg.o
+ .debug_info    0x0000000000001f80     0x315a SSD1306/SSD1306.o
+ .debug_info    0x00000000000050da      0x753 SSD1306/TWI.o
+ .debug_info    0x000000000000582d      0x484 USART_assit/USART_assist.o
+ .debug_info    0x0000000000005cb1       0xab C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/xc8/avr/lib/avr5/memx-const\libatmega328p.a(eerd_byte.o)
+ .debug_info    0x0000000000005d5c       0xab C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/xc8/avr/lib/avr5/memx-const\libatmega328p.a(eerd_word.o)
+ .debug_info    0x0000000000005e07       0xab C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/xc8/avr/lib/avr5/memx-const\libatmega328p.a(eewr_byte.o)
+ .debug_info    0x0000000000005eb2       0xab C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/xc8/avr/lib/avr5/memx-const\libatmega328p.a(eewr_word.o)
+ .debug_info    0x0000000000005f5d       0xac C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/xc8/avr/lib/avr5/memx-const\libatmega328p.a(eerd_block.o)
 
 .debug_abbrev   0x0000000000000000      0xf5a
  *(.debug_abbrev)

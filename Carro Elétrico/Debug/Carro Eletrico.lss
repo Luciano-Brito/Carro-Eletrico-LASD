@@ -15,11 +15,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 00000378  00000000  00000000  00003828  2**3
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00006008  00000000  00000000  00003ba0  2**0
+  6 .debug_info   00006009  00000000  00000000  00003ba0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000f5a  00000000  00000000  00009ba8  2**0
+  7 .debug_abbrev 00000f5a  00000000  00000000  00009ba9  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00002785  00000000  00000000  0000ab02  2**0
+  8 .debug_line   00002785  00000000  00000000  0000ab03  2**0
                   CONTENTS, READONLY, DEBUGGING
   9 .debug_frame  00000cb4  00000000  00000000  0000d288  2**2
                   CONTENTS, READONLY, DEBUGGING
@@ -363,11 +363,11 @@ Disassembly of section .text:
 Disassembly of section .text.map:
 
 00002828 <map>:
-		USART_send_char(*Texto++);
+		_delay_ms(500);
+		GLCD_Render();
 	}
-	USART_send_char('\n');
 }
-*/
+
 double map(double x, double en_min, double en_max, double sa_min, double sa_max) {
     2828:	4f 92       	push	r4
     282a:	5f 92       	push	r5
@@ -1498,7 +1498,7 @@ int main(void)
 Disassembly of section .text.__vector_21:
 
 00002bba <__vector_21>:
-
+}
 
 //interrupções
 
@@ -1696,17 +1696,17 @@ ISR(TIMER2_COMPA_vect){
     302c:	bf 93       	push	r27
 	static uint32_t tempo_ms_bug = 0;	//corrige bug do simulador
 	tempo_ms_bug++;						//corrige bug do simulador
-    302e:	80 91 09 05 	lds	r24, 0x0509	; 0x800509 <tempo_ms_bug.2607>
-    3032:	90 91 0a 05 	lds	r25, 0x050A	; 0x80050a <tempo_ms_bug.2607+0x1>
-    3036:	a0 91 0b 05 	lds	r26, 0x050B	; 0x80050b <tempo_ms_bug.2607+0x2>
-    303a:	b0 91 0c 05 	lds	r27, 0x050C	; 0x80050c <tempo_ms_bug.2607+0x3>
+    302e:	80 91 09 05 	lds	r24, 0x0509	; 0x800509 <_end>
+    3032:	90 91 0a 05 	lds	r25, 0x050A	; 0x80050a <_end+0x1>
+    3036:	a0 91 0b 05 	lds	r26, 0x050B	; 0x80050b <_end+0x2>
+    303a:	b0 91 0c 05 	lds	r27, 0x050C	; 0x80050c <_end+0x3>
     303e:	01 96       	adiw	r24, 0x01	; 1
     3040:	a1 1d       	adc	r26, r1
     3042:	b1 1d       	adc	r27, r1
-    3044:	80 93 09 05 	sts	0x0509, r24	; 0x800509 <tempo_ms_bug.2607>
-    3048:	90 93 0a 05 	sts	0x050A, r25	; 0x80050a <tempo_ms_bug.2607+0x1>
-    304c:	a0 93 0b 05 	sts	0x050B, r26	; 0x80050b <tempo_ms_bug.2607+0x2>
-    3050:	b0 93 0c 05 	sts	0x050C, r27	; 0x80050c <tempo_ms_bug.2607+0x3>
+    3044:	80 93 09 05 	sts	0x0509, r24	; 0x800509 <_end>
+    3048:	90 93 0a 05 	sts	0x050A, r25	; 0x80050a <_end+0x1>
+    304c:	a0 93 0b 05 	sts	0x050B, r26	; 0x80050b <_end+0x2>
+    3050:	b0 93 0c 05 	sts	0x050C, r27	; 0x80050c <_end+0x3>
 	tempo_ms = tempo_ms_bug/2;
     3054:	b6 95       	lsr	r27
     3056:	a7 95       	ror	r26
